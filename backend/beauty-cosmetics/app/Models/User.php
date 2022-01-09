@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Models\UserRole;
-
+use App\Models\Customer;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,6 +69,11 @@ class User extends Authenticatable
     public function userRoles()
     {
         return $this->hasMany(UserRole::class, 'user_id');
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'user_id');
     }
 
 

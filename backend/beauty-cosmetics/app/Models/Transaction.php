@@ -13,6 +13,9 @@ class Transaction extends Model
         'transaction_date'
     ];
 
+    protected $primaryKey = 'transaction_id';
+    
+
     public function cart()
     {
         return $this->hasOne(Cart::class, 'cart_id');

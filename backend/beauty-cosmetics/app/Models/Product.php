@@ -17,6 +17,8 @@ class Product extends Model
         'score',
         'image',
     ];
+
+    protected $primaryKey = 'product_id';
     
     
     public function category()

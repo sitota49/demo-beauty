@@ -16,6 +16,9 @@ class Category extends Model
         'image',
     ];
 
+    protected $primaryKey = 'category_id';
+    
+
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id');

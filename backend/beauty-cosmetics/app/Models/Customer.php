@@ -15,6 +15,9 @@ class Customer extends Model
         'payment_method'
     ];
 
+    protected $primaryKey = 'customer_id';
+    
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

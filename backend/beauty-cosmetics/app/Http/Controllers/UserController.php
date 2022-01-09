@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Role;
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::orderBy('name')->get();
-
-        return view('user_management.roles.index')->with([
-            'roles' => $roles
+         $users = User::orderBy('name')->with('userRoles.role')->get();
+        
+        return view('user_management.users.index')->with([
+            'users' => $users
         ]);
     }
 
@@ -29,7 +28,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('user_management.roles.create');
+        //
     }
 
     /**
@@ -40,16 +39,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
-
-        // Create new role
-        $role = new Role;
-        $role->name = $request->input('name');
-        $role->save();
-
-        return redirect()->route('role.index')->with('success', 'Role created successfully.');
+        //
     }
 
     /**
@@ -60,7 +50,14 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+         $user = User::where('id', $id)->with([
+             'userRoles.role',
+             'customer'
+             ])->first();
+        return view('user_management.users.show')->with([
+           
+            'user'=> $user
+        ]);;
     }
 
     /**
@@ -71,11 +68,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::where('role_id', $id)->first();
-
-        return view('user_management.roles.edit')->with([
-            'role' => $role
-        ]);
+        //
     }
 
     /**
@@ -85,20 +78,15 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        //Enable user
+        $user = User::find($id);
+        $user->status = 1;
+        $user->save();
 
-        // Update role
-        $role = Role::where('role_id', $id)->first();
-       
-        $role->name = $request->input('name');
-        
-        $role->save();
-
-        return redirect()->route('role.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('user.index')->with('success', 'User enabled successfully.');
+  
     }
 
     /**
@@ -109,10 +97,15 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::where('role_id', $id);
-       
-        $role->delete();
+        //Disable user
+        $user = User::find($id);
+        $user->status = 0;
+        $user->save();
 
-        return redirect()->route('role.index')->with('success', 'Role removed successfully.');
+        return redirect()->route('user.index')->with('success', 'User disabled successfully.');
+  
     }
+     
+
+      
 }

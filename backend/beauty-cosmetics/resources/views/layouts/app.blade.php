@@ -7,77 +7,87 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Beauty Cosmetics') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <style>
+         @font-face {
+            font-family: 'Asap-Bold';
+            src: url('/fonts/Asap-Bold.ttf') format('truetype');
+            }
+
+        @font-face {
+        font-family: 'Asap-Medium';
+        src: url('/fonts/Asap-Medium.ttf') format('truetype');
+        }
+
+
+        @font-face {
+        font-family: 'Asap-Regular';
+        src: url('/fonts/Asap-Regular.ttf') format('truetype');
+        }
+
+        @font-face {
+        font-family: 'Asap-SemiBold';
+        src: url('/fonts/Asap-SemiBold.ttf') format('truetype');
+        }
+
+        @font-face {
+        font-family: 'SecularOne-Regular';
+        src: url('/fonts/SecularOne-Regular.ttf') format('truetype');
+        }
+
+    </style>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/ruang-admin.css') }}">
+
+    <link href="{{ asset('select2/dist/css/select2.css') }}" rel="stylesheet" />
+    <script src="{{ asset('jquery/jquery3.3.1.min.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+    <script src="{{ asset('select2/dist/js/select2.min.js') }}"></script>
+
+
+{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script> --}}
+
+
+    <livewireStyles/>
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+<body id="page-top">
+    <div id="wrapper">
+        @include('inc.sidebar')
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                @include('inc.navbar')
+                <div class="container-fluid" id="container-wrapper">
+                    @include('inc.messages')
+                    @yield('content')
                 </div>
             </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+        </div>
     </div>
+
+    <script>
+        $('.select2').select2({
+          width: '100%',
+        //   placeholder: "Select an Option",
+          allowClear: true
+        });
+      </script>
+
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('js/ruang-admin.min.js') }}"></script>
+    <livewireScripts/>
+
 </body>
 </html>

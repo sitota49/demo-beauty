@@ -13,6 +13,9 @@ class Cart extends Model
         'status',
         'total'
     ];
+    
+    protected $primaryKey = 'cart_id';
+    
 
     public function customer()
     {
