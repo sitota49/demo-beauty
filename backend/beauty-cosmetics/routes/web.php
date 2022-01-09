@@ -27,3 +27,8 @@ Route::prefix('user_management')->group(function () {
    Route::resource('role', App\Http\Controllers\RoleController::class);
    Route::resource('user', App\Http\Controllers\UserController::class);
 });
+
+Route::prefix('data_management')->group(function () {
+   Route::resource('category', App\Http\Controllers\CategoryController::class);
+//    Route::resource('user', App\Http\Controllers\UserController::class);
+});

@@ -30,7 +30,7 @@
         </div>
       </div>
     </li>
-    {{-- <li class="nav-item">
+   <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataManagement"
         aria-expanded="true" aria-controls="collapseDataManagement">
        <i class="fas fa-database"></i>
@@ -39,14 +39,9 @@
       <div id="collapseDataManagement" class="collapse {{ Request::is('data_management/*') || Request::is('data')  ? 'show' : '' }}" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Data Management</h6>
-          <a class="collapse-item {{ Request::is('data_management/language') || Request::is('data_management/language/create') || Request::is('data_management/language/*/edit') ? 'active' : '' }}" href="{{ route('language.index') }}">Languages</a>
-          <a class="collapse-item {{ Request::is('data_management/quality') || Request::is('data_management/quality/create') || Request::is('data_management/quality/*/edit') ? 'active' : '' }}" href="{{ route('quality.index') }}">Qualities</a>
-          <a class="collapse-item {{ Request::is('data_management/industry') || Request::is('data_management/industry/create') || Request::is('data_management/industry/*/edit') ? 'active' : '' }}" href="{{ route('industry.index') }}">Industries</a>
-          <a class="collapse-item {{ Request::is('data_management/company_type') || Request::is('data_management/company_type/create') || Request::is('data_management/company_type/*/edit') ? 'active' : '' }}" href="{{ route('company_type.index') }}">Company Types</a>
-          <a class="collapse-item {{ Request::is('data_management/skill') || Request::is('data_management/skill/create') || Request::is('data_management/skill/*/edit') ? 'active' : '' }}" href="{{ route('skill.index') }}">Skills</a>
-          <a class="collapse-item {{ Request::is('data_management/level') || Request::is('data_management/level/create') || Request::is('data_management/level/*/edit') ? 'active' : '' }}" href="{{ route('level.index') }}">Levels</a>
-        </div>
+          <a class="collapse-item {{ Request::is('data_management/category') || Request::is('data_management/category/create') || Request::is('data_management/category/*/edit') ? 'active' : '' }}" href="{{ route('category.index') }}">Categories</a>
+          </div>
       </div>
-    </li> --}}
+    </li> 
     
   </ul>

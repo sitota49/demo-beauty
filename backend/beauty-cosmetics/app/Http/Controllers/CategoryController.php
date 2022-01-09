@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
+use JD\Cloudder\Facades\Cloudder;
 class CategoryController extends Controller
 {
     /**
@@ -15,7 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::orderBy('category_name')->get();
+        return view('data_management.categories.index')->with([
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -25,18 +28,46 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+          return view('data_management.categories.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCategoryRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCategoryRequest $request)
+   
+    public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'name' => 'string|required',
+            'description' => 'string|required',
+            'image' => 'image|nullable|max:1999'
+        ]);
+
+        $image_url = '';
+
+        // Handle file upload
+        if($request->hasFile('image')) {
+           // Get file name with extension
+           $filenameWithExt = $request->file('image')->getClientOriginalName();
+           // Get just file name
+        //    $fileName = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $fileName = $request->file('image')->getRealPath();
+            // dd($fileName);
+           Cloudder::upload($fileName, null);
+           list($width, $height) = getimagesize($fileName);
+           $image_url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width, "height"=>$height]);
+
+        
+       }
+
+       // Create new  category
+       $category = new Category;
+       $category->category_name = $request->input('name');
+       $category->description = $request->input('description');
+       $category->image = $image_url;
+       $category->save();
+
+
+       return redirect()->route('category.index')->with('success', 'Category created successfully.');
+  
     }
 
     /**
@@ -45,7 +76,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
         //
     }
@@ -56,21 +87,47 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::where('category_id', $id)->first();
+
+        return view('data_management.categories.edit')->with([
+            'category' => $category
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCategoryRequest  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCategoryRequest $request, Category $category)
+
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'string|required',
+            'description' => 'string|required',
+            'image' => 'image|nullable|max:1999'
+        ]);
+
+        $image_url = '';
+
+        // Handle file upload
+        if($request->hasFile('image')) {
+           // Get file name with extension
+           $filenameWithExt = $request->file('image')->getClientOriginalName();
+           // Get just file name
+           $fileName = $request->file('image')->getRealPath();
+        //    $fileName = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+           Cloudder::upload($fileName, null);
+           list($width, $height) = getimagesize($fileName);
+           $image_url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width, "height"=>$height]);
+
+         }
+
+       $category = Category::where('category_id', $id)->first();
+       $category->category_name = $request->input('name');
+       $category->description = $request->input('description');
+       $category->image = $request->hasFile('image') != null ? $image_url : $category->image;
+       $category->update();
+
+       return redirect()->route('category.index')->with('success', 'Category update successfully.');
+  
     }
 
     /**
@@ -79,8 +136,16 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::where('category_id', $id)->first();
+        if($category->products->count() > 0) {
+            return redirect()->route('category.index')->with('success',  "Category can't be removed. There are some products with it" . $category->name . " post category.");
+        }
+
+        $category->delete();
+
+        return redirect()->route('category.index')->with('success', 'Category removed successfully.');
+  
     }
 }
