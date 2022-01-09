@@ -9,6 +9,11 @@ class Cart extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'status',
+        'total'
+    ];
+
     public function customer()
     {
         return $this->hasOne(Customer::class, 'customer_id');

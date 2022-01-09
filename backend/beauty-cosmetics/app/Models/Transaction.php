@@ -9,6 +9,10 @@ class Transaction extends Model
 {
     use HasFactory;
 
+     protected $fillable = [
+        'transaction_date'
+    ];
+
     public function cart()
     {
         return $this->hasOne(Cart::class, 'cart_id');

@@ -9,6 +9,12 @@ class OrderItem extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'quantity',
+        'order_item_total',
+       
+    ];
+
     public function cart()
     {
         return $this->hasOne(Cart::class, 'cart_id');
