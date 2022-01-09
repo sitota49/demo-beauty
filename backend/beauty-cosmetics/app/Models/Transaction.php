@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'cart_id');
+    }
 }

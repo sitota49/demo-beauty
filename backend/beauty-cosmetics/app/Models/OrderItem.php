@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     use HasFactory;
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'cart_id');
+    }
+    
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'product_id');
+    }
 }
