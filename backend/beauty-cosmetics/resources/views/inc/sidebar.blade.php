@@ -39,7 +39,8 @@
       <div id="collapseDataManagement" class="collapse {{ Request::is('data_management/*') || Request::is('data')  ? 'show' : '' }}" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Data Management</h6>
-          <a class="collapse-item {{ Request::is('data_management/category') || Request::is('data_management/category/create') || Request::is('data_management/category/*/edit') ? 'active' : '' }}" href="{{ route('category.index') }}">Categories</a>
+          <a class="collapse-item {{ Request::is('data_management/product') || Request::is('data_management/category/create') || Request::is('data_management/category/*/edit') ? 'active' : '' }}" href="{{ route('category.index') }}">Categories</a>
+          <a class="collapse-item {{ Request::is('data_management/product') || Request::is('data_management/product/create') || Request::is('data_management/product/*/edit') ? 'active' : '' }}" href="{{ route('product.index') }}">Products</a>
           </div>
       </div>
     </li> 

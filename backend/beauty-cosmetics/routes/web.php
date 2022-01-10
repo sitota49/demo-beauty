@@ -30,5 +30,5 @@ Route::prefix('user_management')->group(function () {
 
 Route::prefix('data_management')->group(function () {
    Route::resource('category', App\Http\Controllers\CategoryController::class);
-//    Route::resource('user', App\Http\Controllers\UserController::class);
+    Route::resource('product', App\Http\Controllers\ProductController::class);
 });

@@ -3,83 +3,104 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-
+use App\Models\Category;
+use Illuminate\Http\Request;
+use JD\Cloudder\Facades\Cloudder;
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
-        //
+        $products = Product::orderBy('product_name')->with('category')->get();
+    
+        return view('data_management.products.index')->with([
+            'products' => $products
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
-        //
+        $categories = Category::orderBy('category_name')->pluck('category_name', 'category_id');
+       
+        return view('data_management.products.create')->with([
+            'categories' => $categories,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
+  
+    public function store(Request $request)
+    {
+        
+         $this->validate($request, [
+            'category' => 'required',
+            'product_name' => 'string|required',
+            'description' => 'string|required',
+            'stock' => 'integer|required',
+            'unit_price' => 'numeric|required',
+            'image' => 'image|nullable|max:1999'
+        ]);
+
+       $image_url = '';
+
+        // Handle file upload
+        if($request->hasFile('image')) {
+           // Get file name with extension
+           $filenameWithExt = $request->file('image')->getClientOriginalName();
+           // Get just file name
+        //    $fileName = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $fileName = $request->file('image')->getRealPath();
+            // dd($fileName);
+           Cloudder::upload($fileName, null);
+           list($width, $height) = getimagesize($fileName);
+           $image_url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width, "height"=>$height]);
+
+        
+       }
+
+        $product = new Product;
+        $product->category_id = $request->input('category');
+        $product->product_name = $request->input('product_name');
+        $product->description = $request->input('description');
+        $product->stock = $request->input('stock');
+        $product->score = 0;
+        $product->unit_price = $request->input('unit_price');
+        $product->image = $image_url;
+        $product->save();
+
+
+        return redirect()->route('product.index')->with('success', 'Product created successfully.');
+
+    }
+
+    
+    public function show($id)
+    {
+         $product = Product::where('product_id', $id)->with('category')->first();
+
+        return view('data_management.products.show')->with([
+            'product' => $product
+        ]);
+    }
+
+   
+    public function edit($id)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
+    
+    public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProductRequest $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
+   
+    public function destroy($id)
     {
         //
     }

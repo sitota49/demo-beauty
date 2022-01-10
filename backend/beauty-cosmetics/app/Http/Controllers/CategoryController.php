@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use JD\Cloudder\Facades\Cloudder;
 class CategoryController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -81,12 +85,7 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         $category = Category::where('category_id', $id)->first();
@@ -130,12 +129,7 @@ class CategoryController extends Controller
   
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+  
     public function destroy($id)
     {
         $category = Category::where('category_id', $id)->first();
