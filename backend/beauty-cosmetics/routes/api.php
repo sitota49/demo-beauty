@@ -36,7 +36,10 @@ Route::group(['prefix'=> 'cart_management', 'middleware' => ['auth:sanctum']], f
     Route::put('cart', [CartController::class, 'updateItemInCart'])->name('updateItemInCart');
     Route::delete('cart', [CartController::class, 'removeItemFromCart'])->name('removeItemFromCart');
     Route::post('createNewCart', [CartController::class, 'createNewCart'])->name('createNewCart');
+    Route::post('emptyCart', [CartController::class, 'emptyCart'])->name('emptyCart');
+    Route::post('processCart', [CartController::class, 'processCart'])->name('processCart');
 });
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -6,9 +6,12 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\OrderItem;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+
 
 class CartController extends Controller
 {
@@ -103,6 +106,47 @@ class CartController extends Controller
             'message' => 'Item removed successfully.',
            
         ], 200);
+    }
+
+    public function emptyCart(){
+        $user = Auth::user();
+        $customer = Customer::where('user_id', $user->id)->first();
+        $cart= $customer->activeCart();
+        foreach ($cart->orderItems as $key => $item) {
+             $orderItem = OrderItem::where('order_item_id', $item->order_item_id)->first();
+             $orderItem->delete();
+        }
+        
+        return response()->json([
+            'message' => 'Cart emptied successfully.',
+           
+        ], 200);
+    }
+
+    public function processCart(){
+        $user = Auth::user();
+        $customer = Customer::where('user_id', $user->id)->first();
+        $cart= $customer->activeCart();
+        $transaction = new Transaction();
+        $transaction->cart_id = $cart->cart_id;
+        $transaction->transaction_date = now()->isoFormat('Y-M-D HH:mm:ss');
+
+        foreach ($cart->orderItems as $key => $item) {
+            $orderItem = OrderItem::where('order_item_id', $item->order_item_id)->first();
+            $product = Product::where('product_id', $orderItem->product_id)->first();
+            $cart-> cart_total = $cart->cart_total +  $orderItem->order_item_total ;
+            $product-> stock = $product->stock - $orderItem->quantity;
+            $product->save();
+        }
+        
+        $cart->save();
+        $transaction->save();
+
+        return response()->json([
+            'message' => 'Cart processed successfully.',
+           
+        ], 200);
+
     }
 
     
