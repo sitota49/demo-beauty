@@ -19,7 +19,7 @@ class Cart extends Model
 
     public function customer()
     {
-        return $this->hasOne(Customer::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     public function orderItems()

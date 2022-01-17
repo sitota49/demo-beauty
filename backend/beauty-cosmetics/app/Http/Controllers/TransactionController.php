@@ -19,7 +19,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        
+         $transactions = Transaction::with(['cart.customer.user'])->get();
+       
+    
+        return view('order_management.transactions.index')->with([
+            'transactions' => $transactions
+        ]);
     }
 
     /**

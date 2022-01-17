@@ -18,6 +18,6 @@ class Transaction extends Model
 
     public function cart()
     {
-        return $this->hasOne(Cart::class, 'cart_id');
+        return $this->belongsTo(Cart::class, 'cart_id');
     }
 }

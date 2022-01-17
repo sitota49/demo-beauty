@@ -15,16 +15,16 @@ class OrderItem extends Model
 
     ];
 
-    protected $primaryKey = 'role_id';
+    protected $primaryKey = 'order_item_id';
 
 
     public function cart()
     {
-        return $this->hasOne(Cart::class, 'cart_id');
+        return $this->belongsTo(Cart::class, 'cart_id');
     }
 
     public function product()
     {
-        return $this->hasOne(Product::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

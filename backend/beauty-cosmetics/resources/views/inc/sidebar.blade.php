@@ -39,9 +39,22 @@
       <div id="collapseDataManagement" class="collapse {{ Request::is('data_management/*') || Request::is('data')  ? 'show' : '' }}" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Data Management</h6>
-          <a class="collapse-item {{ Request::is('data_management/product') || Request::is('data_management/category/create') || Request::is('data_management/category/*/edit') ? 'active' : '' }}" href="{{ route('category.index') }}">Categories</a>
+          <a class="collapse-item {{ Request::is('data_management/category') || Request::is('data_management/category/create') || Request::is('data_management/category/*/edit') ? 'active' : '' }}" href="{{ route('category.index') }}">Categories</a>
           <a class="collapse-item {{ Request::is('data_management/product') || Request::is('data_management/product/create') || Request::is('data_management/product/*/edit') ? 'active' : '' }}" href="{{ route('product.index') }}">Products</a>
           </div>
+      </div>
+    </li> 
+     <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrderManagement"
+        aria-expanded="true" aria-controls="collapseOrderManagement">
+      <i class="fas fa-shopping-cart"></i>
+        <span>Order Management</span>
+      </a>
+      <div id="collapseOrderManagement" class="collapse {{ Request::is('order_management/*') || Request::is('order')  ? 'show' : '' }}" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Order Management</h6>
+              <a class="collapse-item {{ Request::is('order_management/cart') ||  Request::is('order_management/cart/*') ? 'active' : '' }}" href="{{ route('cart.index') }}">Carts</a>
+              <a class="collapse-item {{ Request::is('order_management/transaction') ||  Request::is('order_management/transaction/*') ? 'active' : '' }}" href="{{ route('transaction.index') }}">Transactions</a> </div>
       </div>
     </li> 
     

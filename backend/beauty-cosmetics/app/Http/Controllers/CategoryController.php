@@ -119,7 +119,7 @@ class CategoryController extends Controller
 
          }
 
-       $category = Category::where('category_id', $id)->first();
+       
        $category->category_name = $request->input('name');
        $category->description = $request->input('description');
        $category->image = $request->hasFile('image') != null ? $image_url : $category->image;
@@ -134,7 +134,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('category_id', $id)->first();
         if($category->products->count() > 0) {
-            return redirect()->route('category.index')->with('success',  "Category can't be removed. There are some products with it" . $category->name . " post category.");
+            return redirect()->route('category.index')->with('success',  "Category can't be removed. There are some products with it" . $category->name . " category.");
         }
 
         $category->delete();

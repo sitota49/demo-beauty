@@ -12,6 +12,7 @@ use App\Models\Cart;
 use App\Models\OrderItem;
 use App\Models\Transaction;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Hash;
 class MySeeder extends Seeder
@@ -76,7 +77,7 @@ class MySeeder extends Seeder
         $categoryTwo->save();
 
         $productOne = new Product;
-        $productOne->category_id = $categoryOne->id;
+        $productOne->category_id = $categoryOne->category_id;
         $productOne->product_name = "Cleanser";
         $productOne->description = "For dry skin";
         $productOne->unit_price =79.0;
@@ -85,7 +86,7 @@ class MySeeder extends Seeder
         $productOne->save();
 
         $productTwo = new Product;
-        $productTwo->category_id = $categoryTwo->id;
+        $productTwo->category_id = $categoryTwo->category_id;
         $productTwo->product_name = "Matt Brown";
         $productTwo->description = "Suttle shade of brown";
         $productTwo->unit_price =19.0;
@@ -93,38 +94,40 @@ class MySeeder extends Seeder
         $productTwo->score =0;
         $productTwo->save();
 
-        // $cart = new Cart;
-        // $cart->customer_id = $customer->id;
-        // $cart->status = 'pending';
-        // $cart->cart_total=0;
+        $cart = new Cart;
+        $cart->customer_id = $customer->customer_id;
+        $cart->status = 'pending';
+        $cart->cart_total=0;
+        $cart->save();
         
-        // $orderItem1 = new OrderItem;
-        // $orderItem1->cart_id = $cart->id;
-        // $orderItem1->product_id = $productOne->id;
-        // $orderItem1->quantity = 2;
-        // $orderItem1->order_item_total = $productOne->unit_price * $orderItem1->quantity;
-        // $orderItem1 ->save();
-        // $productOne->score = $productOne->score +  1 ;
-        // $productOne->save();
+        $orderItem1 = new OrderItem;
+        $orderItem1->cart_id = $cart->cart_id;
+        $orderItem1->product_id = $productOne->product_id;
+        $orderItem1->quantity = 2;
+        $orderItem1->order_item_total = $productOne->unit_price * $orderItem1->quantity;
+        $orderItem1 ->save();
+        $productOne->score = $productOne->score +  1 ;
+        $productOne->save();
        
 
-        // $orderItem2 = new OrderItem;
-        // $orderItem2->cart_id = $cart->id;
-        // $orderItem2->product_id = $productTwo->id;
-        // $orderItem2->quantity = 3;
-        // $orderItem2->order_item_total = $productTwo->unit_price * $orderItem2->quantity;
-        // $orderItem2 ->save();
-        // $productTwo->score = $productTwo->score +1 ;
-        // $productTwo->save();
+        $orderItem2 = new OrderItem;
+        $orderItem2->cart_id = $cart->cart_id;
+        $orderItem2->product_id = $productTwo->product_id;
+        $orderItem2->quantity = 3;
+        $orderItem2->order_item_total = $productTwo->unit_price * $orderItem2->quantity;
+        $orderItem2 ->save();
+        $productTwo->score = $productTwo->score +1 ;
+        $productTwo->save();
 
-        // $cart-> cart_total = $cart->cart_total +  $orderItem1->order_item_total ;
-        // $cart-> cart_total = $cart->cart_total +  $orderItem2->order_item_total ;
-        // $cart->save();
+        $cart-> cart_total = $cart->cart_total +  $orderItem1->order_item_total ;
+        $cart-> cart_total = $cart->cart_total +  $orderItem2->order_item_total ;
+        $cart->save();
 
-        // $transaction = new Transaction();
-        // $transaction->cart_id = $cart->id;
-        // $transaction->transaction_date =  $transaction->created_at;
-
+        $transaction = new Transaction();
+        $transaction->cart_id = $cart->cart_id;
+        $transaction->transaction_date =  "2021-12-13";
+        $transaction->save();
+        //stock reduction logic
 
 
 
