@@ -38,7 +38,7 @@
                        
                       
                         <td>
-                          {{$transaction->date}}
+                          {{$transaction->transaction_date}}
                         </td>
                     </tr>
                 @endforeach
